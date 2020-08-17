@@ -138,7 +138,52 @@ def countElementsByCriteria(director,lst,lst2):
 
 
 
+def countElementsFilteredByColumn2(criteria, column, lst):
+    """
+    Retorna cuantos elementos coinciden con un criterio para una columna dada  
+    Args:
+        criteria:: str
+            Critero sobre el cual se va a contar la cantidad de apariciones
+        column
+            Columna del arreglo sobre la cual se debe realizar el conteo
+        list
+            Lista en la cual se realizará el conteo, debe estar inicializada
+    Return:
+        counter :: int
+            la cantidad de veces ue aparece un elemento con el criterio definido
+    """
+    if len(lst)==0:
+        print("La lista esta vacía")  
+        return 0
+    else:
+        t1_start = process_time() #tiempo inicial
+        counter=0 #Cantidad de repeticiones
+        for element in lst:
+            if criteria.lower() in element[column].lower(): #filtrar por palabra clave 
+                counter+=1
+        t1_stop = process_time() #tiempo final
+        print("Tiempo de ejecución ",t1_stop-t1_start," segundos")
+    return counter
 
+def countElementsByCriteria2(criteria, lst, lst2):
+    """
+    Retorna la cantidad de elementos que cumplen con un criterio para una columna dada
+    """
+    t1_start = process_time() #tiempo inicial
+    ids =[]
+    cuenta= 0
+    puntajes=[]
+    for n in range(len(lst)):
+        if lst[n]["director_name"] == criteria:
+            ids.append(lst[n]["id"])
+    for n in range(len(lst2)):
+        if lst2[n]["id"] in ids and float(lst2[n]["vote_average"])>= 6:
+            cuenta+=1
+            puntajes.append(float(lst2[n]["vote_average"]))
+    promedio = sum(puntajes)/len(puntajes)
+    t1_stop = process_time() #tiempo final
+    print("Tiempo de ejecución ",t1_stop-t1_start," segundos")
+    return (cuenta,promedio)
 def main():
     """
     Método principal del programa, se encarga de manejar todos los metodos adicionales creados
